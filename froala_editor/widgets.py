@@ -68,14 +68,15 @@ class FroalaEditor(widgets.Textarea):
         return mark_safe(html)
 
     def trigger_froala(self, el_id, options):
-
-        str = """
+        return f"""
         <script>
-            $(function(){
-                $('#%s').froalaEditor(%s)
-            });
-        </script>""" % (el_id, options)
-        return str
+            $(function(){{
+                $('#{el_id}').on('froalaEditor.initialized', function (e, editor) {{
+                    $(this).parents('.form-row').css('overflow', 'visible')
+                }});
+                $('#{el_id}').froalaEditor({options});
+            }});
+        </script>"""
 
     def _media(self):
         css = {
